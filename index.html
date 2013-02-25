@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="jquery.js"></script>
+	<script src="jquery-ui.js"></script>
+	<script>
+		$(document).ready(function() {
+		    var $dragging = null;
+
+		    $('.magnets').on("mousemove", function(e) {
+		        if ($dragging) {
+		            $dragging.offset({
+		                top: e.pageY,
+		                left: e.pageX
+		            });
+		        }
+		    });
+		    
+		    $('.magnets').on("mousedown", "div", function (e) {
+		        $dragging = $(e.target);
+		    });
+		    
+		    $(document.body).on("mouseup", function (e) {
+		        $dragging = null;
+		    });
+
+		    $.each($('.magnet'), function(key, value){
+		    	var posNeg = function(){
+		    		if ( Math.random() > .5 ) {
+		    			return -1
+		    		} else {
+		    			return 1
+		    		}
+		    	}
+		    	var randDeg = posNeg() * (Math.random() * 10)
+		    	$(value).css({ WebkitTransform: 'rotate(' + randDeg + 'deg)'});
+		    });
+		});
+	</script>
+
+	<link rel="stylesheet" href="jquery-ui.css" />
+	<style>
+		.magnets {
+			border: 1px solid black;
+			height: 400px;
+			width: 80%;
+
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+
+			cursor: default;
+
+			background: url("http://www.letrikwenghing.com/media//metal-texture-1400x1050.jpg");
+		}
+
+		.magnet {
+			/*border: 1px solid black;*/
+			padding: 2px 5px;
+			display: inline-block;
+			box-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+			background: white;
+			border: 1px solid #555;
+
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+
+			cursor: default;
+		}
+	</style>
+</head>
+<body>
+	<h1>Magnets Test</h1>
+	<p>Remember to make this variable width so that it works on mobile and such.</p>
+	<div class="magnets">
+		<div class="magnet">word</div>
+		<div class="magnet">dog</div>
+		<div class="magnet">love</div>
+		<div class="magnet">cool</div>
+		<div class="magnet">s</div>
+		<div class="magnet">ing</div>
+		<div class="magnet">y</div>
+		<div class="magnet">ly</div>
+		<div class="magnet">cream</div>
+		<div class="magnet">shark</div>
+		<div class="magnet">coffee</div>
+		<div class="magnet">rose</div>
+	</div>
+</body>
+</html
