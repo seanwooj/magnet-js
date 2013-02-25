@@ -4,37 +4,76 @@
 	<script src="jquery.js"></script>
 	<script src="jquery-ui.js"></script>
 	<script>
-		$(document).ready(function() {
-		    var $dragging = null;
+		var poemData = {
 
-		    $('.magnets').on("mousemove", function(e) {
-		        if ($dragging) {
-		            $dragging.offset({
-		                top: e.pageY,
-		                left: e.pageX
-		            });
-		        }
+		};
+
+		$(document).ready(function() {
+
+
+				// INSTANTIATING GLOBAL VARIABLES
+		    var $dragging = null;
+		    var magnetsWidth, magnetsHeight, magnetsOffset, pageWidth, pageHeight;
+
+				// GETS AND SETS VARIABLES BASED ON WINDOW SIZE
+				// SETS PAGE HEIGHT
+		    var getSetVariableWidth = function() {
+		    	magnetsWidth = $(".magnets").width();
+    			magnetsHeight = $(".magnets").height();
+    			magnetsOffset = $('.magnets').offset();
+					pageWidth = $(window).width();
+					pageHeight = $(window).height();
+
+					// dynamically setting the height to 80% of the window
+		    	$('.magnets').height(pageHeight * 0.8)
+		    }
+
+		    getSetVariableWidth();
+
+				// CHANGING VARIABLES BASED ON WINDOW RESIZE
+		    $(window).resize(function(){
+		    	getSetVariableWidth();
 		    });
-		    
+
+		    // DRAGGING FUNCTIONALITY
+		    $('.magnets').on("mousemove", function(e) {
+	        if ($dragging) {
+        		var left = ((e.pageX - magnetsOffset.left) / magnetsWidth) * 100;
+        		var top = ((e.pageY - magnetsOffset.top) / magnetsHeight) * 100;
+            $dragging.css({
+                top: top + "%",
+                left: left + "%"
+            });
+	        }
+		    });
+
 		    $('.magnets').on("mousedown", "div", function (e) {
 		        $dragging = $(e.target);
 		    });
-		    
+
 		    $(document.body).on("mouseup", function (e) {
 		        $dragging = null;
 		    });
 
-		    $.each($('.magnet'), function(key, value){
-		    	var posNeg = function(){
-		    		if ( Math.random() > .5 ) {
-		    			return -1
-		    		} else {
-		    			return 1
-		    		}
-		    	}
-		    	var randDeg = posNeg() * (Math.random() * 10)
-		    	$(value).css({ WebkitTransform: 'rotate(' + randDeg + 'deg)'});
-		    });
+
+
+				// RANDOM ROTATION OF MAGNETS
+				var rotateAllMagnets = function() {
+					$.each($('.magnet'), function(key, value){
+						var posNeg = function(){
+							if ( Math.random() > .5 ) {
+								return -1
+							} else {
+								return 1
+							}
+						}
+						var randDeg = posNeg() * (Math.random() * 10)
+						$(value).css({ WebkitTransform: 'rotate(' + randDeg + 'deg)'});
+					});
+				}
+
+				rotateAllMagnets();
+
 		});
 	</script>
 
@@ -42,8 +81,9 @@
 	<style>
 		.magnets {
 			border: 1px solid black;
-			height: 400px;
 			width: 80%;
+
+			position: relative;
 
 			-webkit-touch-callout: none;
 			-webkit-user-select: none;
@@ -54,16 +94,19 @@
 
 			cursor: default;
 
-			background: url("http://www.letrikwenghing.com/media//metal-texture-1400x1050.jpg");
+			background: url("cashcat.jpg");
+			background-size: cover;
 		}
 
 		.magnet {
 			/*border: 1px solid black;*/
+			position: absolute;
 			padding: 2px 5px;
-			display: inline-block;
+			display: block;
 			box-shadow: 1px 1px 3px rgba(0,0,0,0.6);
 			background: white;
 			border: 1px solid #555;
+			font-family: 'Helvetica', 'Helvetica Neue';
 
 			-webkit-touch-callout: none;
 			-webkit-user-select: none;
@@ -80,6 +123,7 @@
 	<h1>Magnets Test</h1>
 	<p>Remember to make this variable width so that it works on mobile and such.</p>
 	<div class="magnets">
+		<div class="magnet">word</div>
 		<div class="magnet">word</div>
 		<div class="magnet">dog</div>
 		<div class="magnet">love</div>
